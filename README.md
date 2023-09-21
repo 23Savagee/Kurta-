@@ -79,3 +79,4 @@ Stay tuned for updates and new features!
 ## 🦇〢 Preview
 
 ![Image 1](https://i.imgur.com/vUdqCgV.png)
+![Image 2](https://i.imgur.com/PpFbwCV.png)
