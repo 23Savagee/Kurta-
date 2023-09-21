@@ -21,7 +21,7 @@ echo.
 echo                                                        [1] Start Installer 
 echo                                                        [2] About Kurta
 echo.
-set /p choice=: Choose : 
+set /p choice=:                                                      Choose : 
 
 if /i "%choice%"=="1" (
   goto Installer
