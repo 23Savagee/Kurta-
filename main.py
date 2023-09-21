@@ -26,8 +26,7 @@ text = r"""
 ▐                            ▐                 
                                                          
             [1] Kurta Obfuscator
-            [2] Kurta Obfuscator 2
-            [3] Kurta Hastebin API
+            [2] Kurta Hastebin API
             [4] Exit
 """[:-1]
 
@@ -71,73 +70,6 @@ def stage(text: str, symbol: str = '...', col1=light, col2=None) -> str:
     if col2 is None:
         col2 = light if symbol == '...' else red
     return f""" {Col.Symbol(symbol, col1, dark)} {col2}{text}{Col.reset}"""
-
-__all__ = ('kurata_obf', 'obfuscate')
-
-_other_hex_mode = False  
-
-alphabet = [chr(i) for i in range(97, 123)]
-name = ''.join([_choice(alphabet) for _ in range(_randint(4, 6))])
-arg_name = ''.join([_choice(alphabet) for _ in range(_randint(4, 6))])
-for_name = ''.join([_choice(alphabet) for _ in range(_randint(4, 6))])
-array_name = ''.join([_choice(alphabet) for _ in range(_randint(4, 6))])
-
-num = 0
-x_hex = 1
-o_oct = 2
-b_bin = 3
-
-symbols = ['+', '-', '*', '//', '<<', '>>', '&', '^', '%', '|']
-
-
-def kurataf(x):
-    return "".join(f"\\x{ord(c):02x}" for c in x)
-
-def kurata_obf(letter):
-    choice = _randint(0, 3)
-    second_choice = _randint(1, 3)
-    result = '(0x{0}'.format(str(_randint(190, 0xFF)))
-    if choice == num:
-        result += '%s%s)' % (_choice(symbols), str(_randint(1, 0xFF)))
-    elif choice == x_hex:
-        result += '%s0x%s)' % (_choice(symbols), str(_randint(1, 0xFF)))
-    elif choice == o_oct:
-        result += '%s0o%s%s%s)' % (_choice(symbols), str(_randint(1, 7)), str(_randint(1, 7)), str(_randint(1, 7)))
-    elif choice == b_bin:
-        result += '%s%s)' % (_choice(symbols), bin(_randint(1, 0xFF)))
-    almost = eval(result)
-    if almost < 0:
-        result += '+(%s)' % ((hex if second_choice == x_hex else oct if second_choice == o_oct else bin)((int(repr(int(
-            repr(almost)[1:]) - ord(letter))))))
-    elif almost == 0:
-        result += '+(%s)' % ((hex if second_choice == x_hex else oct if second_choice == o_oct else bin)((int(repr(int(
-            repr(almost)) - ord(letter))[1:]))))
-    else:
-        result += '-(%s)' % ((hex if second_choice == x_hex else oct if second_choice == o_oct else bin)(
-            almost - ord(letter)))
-    return result
-
-def obfuscate(code):
-    beta_result = []
-    if len(_argv) > 3 or _other_hex_mode:
-        code = f'"{kurataf(code)}"'.replace('//', '////')
-        
-    for i in range(len(code)):
-        _r = kurata_obf(code[i])
-        if eval(_r) < 0:
-            beta_result.append('%s' % (hex
-                                       (int(str(eval(_r))[1:]))))
-        else:
-            beta_result.append('%s' % _r)
-    return f'''def {name}(*{arg_name}):
-    {array_name} = []
-    for {for_name} in {arg_name}:
-        {array_name}.append(getattr(__import__("{kurataf('builtins')}"), "{kurataf('chr')}")({for_name}))
-    return ''.join({array_name})\ngetattr(__import__("{kurataf('builtins')}"), "{kurataf('exec')}")(''' + (
-        f"""getattr(__import__("{kurataf('builtins')}"), "{kurataf('eval')}")("""
-        if _other_hex_mode or len(_argv) > 3 else '') +\
-        f'''{name}(''' + ','.join(beta_result) + '))' + (')' if _other_hex_mode or len(_argv) > 3 else '')
-    
 
 class Obfuscator:
     def __init__(self, code, outpath):
@@ -265,7 +197,7 @@ def main():
     print()
     
     while True:
-        clear_screen()  # Limpia la pantalla al inicio de cada iteración del bucle
+        clear_screen() 
         print(Colorate.Diagonal(Colors.DynamicMIX((red, dark)), Center.XCenter(banner)))
         print('\n')
 
@@ -296,39 +228,10 @@ def main():
             clear_screen() 
 
         elif user_choice == '2':
-            # Opción 2: Ofuscación personalizada con la función kurata_obf
-            file = input(stage(f"Drag the file you want to obfuscate for Option 2 {dark}-> {Col.reset}", "?", col2=bred)).replace('"', '').replace("'", "")
-            print('\n')
-
-            try:
-                with open(file, mode='rb') as f:
-                    script = f.read().decode('utf-8')
-                filename = file.split('\\')[-1]
-                print('\n')
-
-                obfuscated_script = kurata_obf(script)
-
-                build_folder = "build-option2"
-                if not os.path.exists(build_folder):
-                    os.makedirs(build_folder)
-
-                with open(os.path.join(build_folder, f'obf-{filename}'), 'w', encoding='utf-8') as output_file:
-                    output_file.write(obfuscated_script)
-
-                print('\n')
-                getpass(stage(f"Obfuscation completed successfully for Option 2. Obfuscated code saved in 'build-option2' folder.", "?", col2=bred))
-            except FileNotFoundError:
-                print(stage(f"File '{file}' not found.", "!", col2=Col.red))
-            except Exception as e:
-                print(stage(f"Error: {str(e)}", "!", col2=Col.red))
-            finally:
-                input(stage("Press Enter to return to the main menu.", "?", col2=bred))
-
-        elif user_choice == '3':
-            # Opción 3: Aquí puedes implementar otra funcionalidad si lo deseas
+            # Opción 3: 
             pass
 
-        elif user_choice == '4':
+        elif user_choice == '3':
             print("Exiting the script.")
             break
 
