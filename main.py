@@ -11,6 +11,7 @@ from lzma import compress
 from marshal import dumps
 from pystyle import *
 from getpass import getpass
+from requests import post
 from random import choice as _choice, randint as _randint
 from sys import argv as _argv
 
@@ -27,7 +28,7 @@ text = r"""
                                                          
             [1] Kurta Obfuscator
             [2] Kurta Hastebin API
-            [4] Exit
+            [3] Exit
 """[:-1]
 
 banner = """
@@ -228,7 +229,7 @@ def main():
             clear_screen() 
 
         elif user_choice == '2':
-            # Opción 3: 
+            # Opción 2:
             pass
 
         elif user_choice == '3':
